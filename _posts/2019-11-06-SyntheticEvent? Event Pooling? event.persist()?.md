@@ -1,6 +1,7 @@
 ---
 published: true
-layout: SyntheticEvent? Event Pooling? event.persist()?'
+layout: single
+title: 'SyntheticEvent? Event Pooling? event.persist()?'
 comments: true
 ---
 
