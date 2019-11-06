@@ -49,7 +49,7 @@ const Body: React.FC = (): JSX.Element => {
 위와 같이 평소 useReducer를 사용하던 방식과, useState를 사용하던 방식을 합쳐서 작성했고, 아무런 문제가 없어 보였다.
 
 `하지만...`
-![Error](./assets/1106error.png)
+![Error](https://raw.githubusercontent.com/gyeol1212/gyeol1212.github.io/master/_posts/assets/1106error.png)
 
 두 번 이상, setInfo 함수가 실행되는 순간, <br>
 다음과 같은 Error 메시지가 출력되며
@@ -75,7 +75,7 @@ const setInfo = (event: ChangeEvent<HTMLInputElement>): void => {
 
 다음은 React 공식 문서의 합성 이벤트(SyntheticEvent) 관련 부분이다.
 
-![eventPooling](./assets/eventPooling.png)
+![eventPooling](https://raw.githubusercontent.com/gyeol1212/gyeol1212.github.io/master/_posts/assets/eventPooling.png)
 
 이러한 현상을, _이벤트 풀링(Event Pooling)_ 이라 한다.
 
