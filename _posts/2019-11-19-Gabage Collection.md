@@ -1,7 +1,7 @@
 ---
 published: true
 layout: single
-title: "Error Boundaries"
+title: "JavaScript Gabage Collection"
 comments: true
 ---
 
