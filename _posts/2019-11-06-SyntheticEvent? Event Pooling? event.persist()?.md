@@ -1,7 +1,7 @@
 ---
 published: true
 layout: single
-title: 'SyntheticEvent? Event Pooling? event.persist()?'
+title: "SyntheticEvent? Event Pooling? event.persist()?"
 comments: true
 ---
 
@@ -17,33 +17,32 @@ React 내부에서 Input들의 값을 받아 State로 설정하는 작업이 필
 평소에 그냥 일반적으로 useState를 이용해서 하는 편인데, 약간 복잡해질 가능성도 있고 useReducer와 친해지고자 이번에는 useReducer를 사용해 보았다.
 
 ```javascript
-import React, { useReducer, ChangeEvent } from 'react';
+import React, { useReducer, ChangeEvent } from "react";
 
-interface IState { ... };
-type Action =
-  | { type : 'SET_STATE', event: ChangeEvent<HTMLInputElement> };
+interface IState {}
+type Action = { type: "SET_STATE", event: ChangeEvent<HTMLInputElement> };
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'SET_STATE':
+    case "SET_STATE":
       const { name, value } = action.event.target;
       return { ...state, [name]: value };
   }
-}
+};
 
 const Body: React.FC = (): JSX.Element => {
-  const [state, dispatch]  = useReducer(reducer, initialInfo);
+  const [state, dispatch] = useReducer(reducer, initialInfo);
 
-  const setInfo = (event: ChangeEvent<HTMLInputElement>) : void => {
-    dispatch({ type: 'SET_INFO', event });
-  }
+  const setInfo = (event: ChangeEvent<HTMLInputElement>): void => {
+    dispatch({ type: "SET_INFO", event });
+  };
 
   return (
     <div>
-      <input type='text' name="name" onChange={setInfo} />
+      <input type="text" name="name" onChange={setInfo} />
     </div>
-  )
-}
+  );
+};
 ```
 
 위와 같이 평소 useReducer를 사용하던 방식과, useState를 사용하던 방식을 합쳐서 작성했고, 아무런 문제가 없어 보였다.
@@ -69,7 +68,7 @@ const Body: React.FC = (): JSX.Element => {
 ```javascript
 const setInfo = (event: ChangeEvent<HTMLInputElement>): void => {
   // Problem : event 객체 전체를 직접 비동기 함수에 적용!
-  dispatch({ type: 'SET_INFO', event });
+  dispatch({ type: "SET_INFO", event });
 };
 ```
 
@@ -89,18 +88,18 @@ const setInfo = (event: ChangeEvent<HTMLInputElement>): void => {
 const setInfo = (event: ChangeEvent<HTMLInputElement>): void => {
   // dispatch에 넘겨주기 전, name, value 할당
   const { name, value } = event.target;
-  dispatch({ type: 'SET_INFO', name, value });
+  dispatch({ type: "SET_INFO", name, value });
 };
 ```
 
 위와 같이 dispatch 함수에, event객체 대신 필요한 변수들을 할당하여 전달해주고,
 
 ```javascript
-type Action = { type: 'SET_INFO', name: string, value: string };
+type Action = { type: "SET_INFO", name: string, value: string };
 
 const reducer = (state: ITeller, action: Action): ITeller => {
   switch (action.type) {
-    case 'SET_INFO':
+    case "SET_INFO":
       return { ...state, [action.name]: action.value };
   }
 };
@@ -114,13 +113,13 @@ reducer 또한 이렇게 바꿔주면, 문제없이 작동한다.
 
 하지만, reducer 내부에서 event 객체의 다른 property에 접근할 필요가 있어진다면 매번 추가로 넘겨주고, 수정해야하는 불편함이 있어 아쉬웠다.
 
-그래서 추가적으로 구글링을 하던 중, *event.persist()*라는 것을 알게 되었다.
+그래서 추가적으로 구글링을 하던 중, _event.persist()_ 라는 것을 알게 되었다.
 
 ```javascript
 const setInfo = (event: ChangeEvent<HTMLInputElement>): void => {
   // event 객체의 값을 그대로 유지!
   event.persist();
-  dispatch({ type: 'SET_INFO', event });
+  dispatch({ type: "SET_INFO", event });
 };
 ```
 
